@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "ShooterCharacter.generated.h"
 
+//forward declaration of AGun
+class AGun;
+
 UCLASS()
 class SHOOTERCPP_API AShooterCharacter : public ACharacter
 {
@@ -39,5 +42,14 @@ private:
 	float RotationRate = 10;
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
+
+	//restrict bp to only classes that are subclasses of the gun.cpp class
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AGun> GunClass;
+
+	//the gun var.
+	UPROPERTY()
+	AGun* Gun;
+
 
 };

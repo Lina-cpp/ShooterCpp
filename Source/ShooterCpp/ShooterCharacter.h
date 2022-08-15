@@ -35,13 +35,13 @@ private:
 	//movement functions #movement
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
-
-
 	//Gamepad rotation helper
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 10;
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
+	//shooting
+	void Shoot();
 
 	//restrict bp to only classes that are subclasses of the gun.cpp class
 	UPROPERTY(EditDefaultsOnly)

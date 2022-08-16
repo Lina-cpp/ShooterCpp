@@ -37,4 +37,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* MuzzleFlash;
 
+	//max range of LineTraceingByChannel
+	UPROPERTY(EditAnywhere)
+	float MaxRange = 1000;
+
+
 };

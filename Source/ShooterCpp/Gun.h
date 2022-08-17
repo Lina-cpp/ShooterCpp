@@ -36,10 +36,16 @@ private:
 	//Creating particle system - muzzle
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* MuzzleFlash;
+	//Creating particle system - impact
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* ImpactEffect;
 
 	//max range of LineTraceingByChannel
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Combat")
 	float MaxRange = 1000;
+
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	float Damage = 10;
 
 
 };

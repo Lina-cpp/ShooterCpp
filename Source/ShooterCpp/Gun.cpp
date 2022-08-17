@@ -43,9 +43,20 @@ void AGun::PullTrigger()
 	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
 	if(bSuccess)
 	{
-		DrawDebugPoint(GetWorld(), Hit.Location, 20, FColor::Red, true);		 
-	}
+		FVector ShotDirection = -Rotation.Vector(); //getting shot direction
+		//spawning emmiter at place where we shot
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
 
+		AActor *HitActor = Hit.GetActor(); //get hold of the actor
+		if(HitActor != nullptr)
+		{
+			//Dealing Damage
+			FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr); //damage event
+			HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);   //take damage
+		}
+
+	}
+ 
 }
 
 // Called when the game starts or when spawned

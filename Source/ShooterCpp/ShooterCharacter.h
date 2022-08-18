@@ -30,6 +30,16 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 
+	//taking damage
+	virtual float TakeDamage
+	(
+    	float DamageAmount,
+    	struct FDamageEvent const & DamageEvent,
+    	class AController * EventInstigator,
+    	AActor * DamageCauser
+	) override;
+
+
 private:
 
 	//movement functions #movement
@@ -42,6 +52,13 @@ private:
 	void LookRightRate(float AxisValue);
 	//shooting
 	void Shoot();
+
+	//Health
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	float MaxHealth = 100;
+	UPROPERTY(VisibleAnywhere, Category = "Combat")
+	float Health;
+
 
 	//restrict bp to only classes that are subclasses of the gun.cpp class
 	UPROPERTY(EditDefaultsOnly)

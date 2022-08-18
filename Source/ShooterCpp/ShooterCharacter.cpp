@@ -16,6 +16,8 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Health = MaxHealth;
 	
 	//spawn a gun at runtime - spawning a BP_Rifle
 	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
@@ -53,6 +55,25 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	//shot
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AShooterCharacter::Shoot);
 
+}
+
+
+//taking damage function
+float AShooterCharacter::TakeDamage(
+		float DamageAmount,
+		struct FDamageEvent const & DamageEvent,
+		class AController * EventInstigator,
+		AActor * DamageCauser)
+{
+	//taking damage
+	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	//decreasing HP
+	DamageToApply = FMath::Min(Health, DamageToApply);
+	Health -= DamageToApply;
+
+	UE_LOG(LogTemp, Warning, TEXT("Health left: %f"), Health);
+
+	return DamageToApply;
 }
 
 //#movement functions

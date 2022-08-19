@@ -29,6 +29,12 @@ void AShooterCharacter::BeginPlay()
 
 }
 
+bool AShooterCharacter::IsDead() const
+{
+	//if health <= 0 - play dead animation (check ABP)
+	return Health <= 0;
+}
+
 // Called every frame
 void AShooterCharacter::Tick(float DeltaTime)
 {

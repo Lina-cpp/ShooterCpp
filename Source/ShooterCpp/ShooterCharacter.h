@@ -23,6 +23,11 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
+	//Checking if character is dead - used in char animation
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

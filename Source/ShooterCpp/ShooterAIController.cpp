@@ -8,13 +8,6 @@
 void AShooterAIController::BeginPlay()
 {
     Super::BeginPlay();
-    //focusing Ai on player
-    //first - get player pawn
-    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-    //second - set focus
-    SetFocus(PlayerPawn);
-
-
 
 }
 
@@ -24,6 +17,16 @@ void AShooterAIController::Tick(float DeltaSeconds)
     
     //get player pawn
     APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-    //moving AI to player || get close to 2meters
-    MoveToActor(PlayerPawn, 200); 
+
+    if(LineOfSightTo(PlayerPawn)) //if actor see PlayerPawn(us)
+    {
+        SetFocus(PlayerPawn);   //set focus at player
+        MoveToActor(PlayerPawn, AcceptanceRadius); //Move towards us and stops X units before us
+    }
+    else
+    {
+        ClearFocus(EAIFocusPriority::Gameplay); //stop focusing on us
+        StopMovement();  //stop following
+    }
+
 }

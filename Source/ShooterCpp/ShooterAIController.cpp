@@ -4,6 +4,7 @@
 #include "ShooterAIController.h"
 
 #include "Kismet/GameplayStatics.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 void AShooterAIController::BeginPlay()
 {
@@ -15,6 +16,17 @@ void AShooterAIController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
     
+    if(AIBehavior != nullptr)
+    {   
+        //BehaviorTree
+        RunBehaviorTree(AIBehavior);
+        //get player pawn
+        APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+        //Blackboard
+        GetBlackboardComponent()->SetValueAsVector( TEXT("PlayerLocation"), PlayerPawn->GetActorLocation() );
+    }
+
+/* 
     //get player pawn
     APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
@@ -29,4 +41,5 @@ void AShooterAIController::Tick(float DeltaSeconds)
         StopMovement();  //stop following
     }
 
+*/
 }

@@ -40,6 +40,5 @@ void AShooterAIController::Tick(float DeltaSeconds)
         ClearFocus(EAIFocusPriority::Gameplay); //stop focusing on us
         StopMovement();  //stop following
     }
-
 */
 }

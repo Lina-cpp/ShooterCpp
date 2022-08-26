@@ -10,35 +10,32 @@ void AShooterAIController::BeginPlay()
 {
     Super::BeginPlay();
 
+    if(AIBehavior != nullptr)
+    {   
+        RunBehaviorTree(AIBehavior);    //BehaviorTree
+        APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);     //get player pawn
+        GetBlackboardComponent()->SetValueAsVector( TEXT("StartLocation"), GetPawn()->GetActorLocation() );
+    }
+
 }
 
 void AShooterAIController::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-    
-    if(AIBehavior != nullptr)
-    {   
-        //BehaviorTree
-        RunBehaviorTree(AIBehavior);
-        //get player pawn
-        APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-        //Blackboard
-        GetBlackboardComponent()->SetValueAsVector( TEXT("PlayerLocation"), PlayerPawn->GetActorLocation() );
-    }
-
-/* 
+     
     //get player pawn
     APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
     if(LineOfSightTo(PlayerPawn)) //if actor see PlayerPawn(us)
     {
-        SetFocus(PlayerPawn);   //set focus at player
-        MoveToActor(PlayerPawn, AcceptanceRadius); //Move towards us and stops X units before us
+        //Blackboard components
+        GetBlackboardComponent()->SetValueAsVector( TEXT("PlayerLocation"), PlayerPawn->GetActorLocation() );
+        GetBlackboardComponent()->SetValueAsVector( TEXT("LastKnownPlayerLocation"), PlayerPawn->GetActorLocation() );
+
     }
     else
     {
-        ClearFocus(EAIFocusPriority::Gameplay); //stop focusing on us
-        StopMovement();  //stop following
+            GetBlackboardComponent()->ClearValue(TEXT("PlayerLocation")); //clearing PlayerLocation
     }
-*/
+
 }

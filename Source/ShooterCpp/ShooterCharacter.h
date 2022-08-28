@@ -44,6 +44,8 @@ public:
     	AActor * DamageCauser
 	) override;
 
+	//shooting
+	void Shoot();
 
 private:
 
@@ -55,8 +57,6 @@ private:
 	float RotationRate = 10;
 	void LookUpRate(float AxisValue);
 	void LookRightRate(float AxisValue);
-	//shooting
-	void Shoot();
 
 	//Health
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")

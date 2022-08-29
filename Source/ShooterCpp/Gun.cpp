@@ -40,7 +40,10 @@ void AGun::PullTrigger()
 	FVector End = Location + Rotation.Vector() * MaxRange;
 	//TODO LineTrace
 	FHitResult Hit;
-	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
+	FCollisionQueryParams Params; //fixing AI to not shot himself
+	Params.AddIgnoredActor(this); //ignoring gun
+	Params.AddIgnoredActor(GetOwner()); //ignoring actor so you can't get shot by your own weapon xd
+	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 	if(bSuccess)
 	{
 		FVector ShotDirection = -Rotation.Vector(); //getting shot direction

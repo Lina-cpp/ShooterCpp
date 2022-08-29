@@ -3,6 +3,8 @@
 
 #include "ShooterCharacter.h"
 #include "Gun.h"
+#include "Components/CapsuleComponent.h"
+#include "ShooterCppGameModeBase.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -77,7 +79,18 @@ float AShooterCharacter::TakeDamage(
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
 
-	UE_LOG(LogTemp, Warning, TEXT("Health left: %f"), Health);
+	UE_LOG(LogTemp, Warning, TEXT("Health left: %f"), Health); //display HP in log
+
+	if(IsDead())
+	{
+		DetachFromControllerPendingDestroy(); //removing ability to control pawn when dead, so we/ai can't shoot
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision); //disabling colision
+		AShooterCppGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AShooterCppGameModeBase>(); //get hold of gamemode and call PawnKilled()
+		if(GameMode != nullptr)
+		{
+			GameMode->PawnKilled(this);
+		}
+	}
 
 	return DamageToApply;
 }

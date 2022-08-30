@@ -83,13 +83,16 @@ float AShooterCharacter::TakeDamage(
 
 	if(IsDead())
 	{
-		DetachFromControllerPendingDestroy(); //removing ability to control pawn when dead, so we/ai can't shoot
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision); //disabling colision
 		AShooterCppGameModeBase* GameMode = GetWorld()->GetAuthGameMode<AShooterCppGameModeBase>(); //get hold of gamemode and call PawnKilled()
 		if(GameMode != nullptr)
 		{
 			GameMode->PawnKilled(this);
 		}
+
+		DetachFromControllerPendingDestroy(); //removing ability to control pawn when dead, so we/ai can't shoot
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision); //disabling colision
+
+
 	}
 
 	return DamageToApply;

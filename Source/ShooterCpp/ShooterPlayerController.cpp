@@ -5,12 +5,24 @@
 #include "TimerManager.h"
 #include "Blueprint/UserWidget.h"
 
+void AShooterPlayerController::BeginPlay()
+{
+    Super::BeginPlay();
+
+    Crosshair = CreateWidget(this, CrosshairClass); //create widget
+    if (Crosshair != nullptr) //check if not null
+    {
+        Crosshair->AddToViewport(); //make it visible
+    }
+}
+
 void AShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
 {
     Super::GameHasEnded(EndGameFocus, bIsWinner);
 
     UE_LOG(LogTemp, Warning, TEXT("We have finished"));
 
+    Crosshair->RemoveFromViewport(); //removing crosshair when game ends
     if(bIsWinner)
     {
         //create widget

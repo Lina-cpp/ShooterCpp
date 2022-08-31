@@ -17,16 +17,24 @@ class SHOOTERCPP_API AShooterPlayerController : public APlayerController
 public:
 	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
 
+protected:
+	virtual void BeginPlay() override;
+
 private:
 	//Hud
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UUserWidget> LoseScreenClass;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UUserWidget> WinScreenClass;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> CrosshairClass;
 
 	//GameRestart Variables
 	UPROPERTY(EditAnywhere)
 	float RestartDelay = 5;
 
 	FTimerHandle RestartTimer;
+
+	UPROPERTY(EditAnywhere)
+	UUserWidget* Crosshair;
 };

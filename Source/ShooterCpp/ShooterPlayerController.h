@@ -21,6 +21,8 @@ private:
 	//Hud
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UUserWidget> LoseScreenClass;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UUserWidget> WinScreenClass;
 
 	//GameRestart Variables
 	UPROPERTY(EditAnywhere)

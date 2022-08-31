@@ -16,5 +16,8 @@ class SHOOTERCPP_API AKillEmAllGameMode : public AShooterCppGameModeBase
 
 public:
 	virtual void PawnKilled(APawn *PawnKilled) override;
+
+private:
+	void EndGame(bool bIsPlayerWinner); 
 	
 };

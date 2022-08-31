@@ -36,9 +36,16 @@ private:
 	//Creating particle system - muzzle
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* MuzzleFlash;
-	//Creating particle system - impact
+	//muzzle sound
+	UPROPERTY(EditAnywhere)
+	USoundBase* MuzzlSound;
+
+	//Creating particle system - impact	
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* ImpactEffect;
+	//sound at location
+	UPROPERTY(EditAnywhere)
+	USoundBase* ImpactSound;
 
 	//max range of LineTraceingByChannel
 	UPROPERTY(EditAnywhere, Category = "Combat")
@@ -47,5 +54,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	float Damage = 10;
 
+	//LineOfSight trace function
+	bool GunTrace(FHitResult& Hit, FVector& ShotDirection);
+	//drawing the line function
+	AController* GetOwnerController() const;
 
 };

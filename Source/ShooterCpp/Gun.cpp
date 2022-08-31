@@ -22,39 +22,25 @@ AGun::AGun()
 
 void AGun::PullTrigger()
 {
-	//creating emitter in rifle socket
+	//creating emitter flash and sound in rifle socket
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
-	//hold of player controller to get controller and set camera
-	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	if(OwnerPawn == nullptr) return;
-
-	AController* OwnerController = OwnerPawn->GetController();
-	if(OwnerController == nullptr) return;
-
-	FVector Location;
-	FRotator Rotation;
-		OwnerController->GetPlayerViewPoint(Location, Rotation);
-
-
-	//Calculating LineTraceingByChannel
-	FVector End = Location + Rotation.Vector() * MaxRange;
-	//TODO LineTrace
+	UGameplayStatics::SpawnSoundAttached(MuzzlSound, Mesh, TEXT("MuzzleFlashSocket"));
+	
 	FHitResult Hit;
-	FCollisionQueryParams Params; //fixing AI to not shot himself
-	Params.AddIgnoredActor(this); //ignoring gun
-	Params.AddIgnoredActor(GetOwner()); //ignoring actor so you can't get shot by your own weapon xd
-	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+	FVector ShotDirection;
+	bool bSuccess = GunTrace(Hit, ShotDirection);
 	if(bSuccess)
-	{
-		FVector ShotDirection = -Rotation.Vector(); //getting shot direction
-		//spawning emmiter at place where we shot
+	{		
+		//spawning emmiter and sound at place where we shot
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation());
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, Hit.Location);
 
 		AActor *HitActor = Hit.GetActor(); //get hold of the actor
 		if(HitActor != nullptr)
 		{
 			//Dealing Damage
 			FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr); //damage event
+			AController *OwnerController = GetOwnerController();
 			HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);   //take damage
 		}
 
@@ -74,5 +60,38 @@ void AGun::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
+{
+	//get oewner controller
+	AController *OwnerController = GetOwnerController();
+	if (OwnerController == nullptr) 
+		return false; //if it's null return false
+
+	FVector Location;
+	FRotator Rotation;
+
+	OwnerController->GetPlayerViewPoint(Location, Rotation); //getting player Viewport
+	ShotDirection = -Rotation.Vector(); //getting shot direction
+
+
+	//End of LineTraceingByChannel
+	FVector End = Location + Rotation.Vector() * MaxRange;
+	FCollisionQueryParams Params; //fixing AI to not shot himself
+	Params.AddIgnoredActor(this); //ignoring gun
+	Params.AddIgnoredActor(GetOwner()); //ignoring actor so you can't get shot by your own weapon xd
+	return GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+}
+
+AController* AGun::GetOwnerController() const
+{
+	//hold of player controller to get controller and set camera
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if(OwnerPawn == nullptr) 
+		return nullptr;
+
+	return OwnerPawn->GetController();
+	
 }
 

@@ -5,6 +5,7 @@
 #include "EngineUtils.h"
 #include "GameFramework/Controller.h"
 #include "ShooterAIController.h"
+#include "Kismet/GameplayStatics.h"
 
 void AKillEmAllGameMode::PawnKilled(APawn *PawnKilled)
 {
@@ -40,5 +41,6 @@ void AKillEmAllGameMode::EndGame(bool bIsPlayerWinner)
       bool bIsWinner = Controller->IsPlayerController() == bIsPlayerWinner;
       Controller->GameHasEnded(Controller->GetPawn(), bIsWinner);
       //Controller->GetPawn() so we won't lose controll at our pawn
+      // if nullptr we still can move but camera goes crazy
    }
 }

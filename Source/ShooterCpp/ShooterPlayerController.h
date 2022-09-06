@@ -15,7 +15,14 @@ class SHOOTERCPP_API AShooterPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable)
 	virtual void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "ImplementableLoadScores"))
+	void LoadScoresOnScreen();
+
+	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "ImplementableSaveGame"))
+	void SaveGameOnScreen();
 
 protected:
 	virtual void BeginPlay() override;
@@ -26,8 +33,6 @@ private:
 	TSubclassOf<class UUserWidget> LoseScreenClass;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UUserWidget> WinScreenClass;
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<class UUserWidget> CrosshairClass;
 
 	//GameRestart Variables
 	UPROPERTY(EditAnywhere)
@@ -35,6 +40,5 @@ private:
 
 	FTimerHandle RestartTimer;
 
-	UPROPERTY(EditAnywhere)
-	UUserWidget* Crosshair;
+
 };

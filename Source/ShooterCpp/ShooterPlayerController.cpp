@@ -8,12 +8,7 @@
 void AShooterPlayerController::BeginPlay()
 {
     Super::BeginPlay();
-
-    Crosshair = CreateWidget(this, CrosshairClass); //create widget
-    if (Crosshair != nullptr) //check if not null
-    {
-        Crosshair->AddToViewport(); //make it visible
-    }
+ 
 }
 
 void AShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
@@ -22,7 +17,6 @@ void AShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIs
 
     UE_LOG(LogTemp, Warning, TEXT("We have finished"));
 
-    Crosshair->RemoveFromViewport(); //removing crosshair when game ends
     if(bIsWinner)
     {
         //create widget
@@ -30,7 +24,9 @@ void AShooterPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIs
         if(WinScreen != nullptr) //check if not null (in case we didn't add class in CreateWidget())
         {
             WinScreen->AddToViewport(); //adding our widget to viewport
+            SaveGameOnScreen(); //Saving game - (BlueprintImplementableEvent)
         }
+        LoadScoresOnScreen(); //ShowScoreboard  - (BlueprintImplementableEvent)
     }
     else //if we lose game
     {
